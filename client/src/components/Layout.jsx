@@ -1,5 +1,14 @@
 import React from "react";
 
-export const Layout = () => {
-  return <div>Layout</div>;
+import { Navbar } from "./Navbar.jsx";
+
+export const Layout = ({ children }) => {
+  return (
+    <React.Fragment>
+      <div className="container mx-auto">
+        <Navbar />
+        {children}
+      </div>
+    </React.Fragment>
+  );
 };
