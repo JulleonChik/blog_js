@@ -9,5 +9,8 @@
     background: -webkit-linear-gradient(to right, #243b55, #141e30);
     background: linear-gradient(to right, #243b55, #141e30);
     min-height: 100vh;
+    padding-left: 3rem; /* Добавляет отступ слева */
+    padding-right: 3rem; /* Добавляет отступ справа */
+    box-sizing: border-box; /* Гарантирует, что padding не увеличит размер экрана */
   }
 }
