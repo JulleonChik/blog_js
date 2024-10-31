@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
+import authRoute from "./routes/auth.js";
+
 const app = express();
 dotenv.config();
 
@@ -12,14 +14,12 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
 
-//middleware промежуточная(связующая) функция
+// middleware
 app.use(cors());
 app.use(express.json());
 
-//endpoints
-app.get("/", (req, res) => {
-  return res.json({ message: "It's OK!" });
-});
+// routes
+app.use("/api/auth", authRoute);
 
 async function start() {
   try {
