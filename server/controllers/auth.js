@@ -21,8 +21,19 @@ export const register = async (req, res) => {
     const rawUser = new User({ username, password: hashedPassword });
     await rawUser.save();
 
+    const token = jwt.sign(
+      {
+        id: rawUser._id,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "30d",
+      }
+    );
+
     res.json({
       rawUser,
+      token,
       message: "Successful registration",
     });
   } catch (error) {
