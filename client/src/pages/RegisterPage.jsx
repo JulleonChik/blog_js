@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { registerUser } from "../redux/features/auth/authSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const RegisterPage = () => {
   // useState - Returns a stateful value, and a function to update it.
@@ -9,6 +11,16 @@ export const RegisterPage = () => {
   const [password, setPassword] = useState("");
   // Returns the dispatch function from the Redux store.
   const dispatch = useDispatch();
+
+  // useSelector — это хук(крючок) из Redux, который позволяет компонентам React получить доступ к состоянию хранилища (store) Redux.
+  // обращаемся к хранилищу Redux получаем к текущему слайсу вытаскиваем стейт
+  const { status } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (status) {
+      toast(status);
+    }
+  }, [status]);
 
   // при отправке формы регистрации, создаетется асинхронный запрос серверу, который автоматически включает в себя токен авторизации
   const handleSubmit = () => {
