@@ -9,8 +9,26 @@ import { EditPostPage } from "./pages/EditPostPage.jsx";
 import { RegisterPage } from "./pages/RegisterPage.jsx";
 import { LoginPage } from "./pages/LoginPage.jsx";
 import { ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getMe } from "./redux/features/auth/authSlice.js";
 
 function App() {
+  // Получение данных об авторизации
+  // Эта функция позволяет отправлять действия (actions) в Redux, чтобы изменить состояние хранилища.
+  const dispatch = useDispatch();
+
+  // Используем dispatch для отправки асинхронного действия getMe
+  const effectFunc = () => {
+    dispatch(getMe());
+  };
+
+  // Используем хук useEffect для выполнения побочных эффектов.
+  // передан пустой массив, это означает, что эффект не зависит от каких-либо переменных из внешней области видимости.
+  // useEffect с пустым массивом зависимостей выполняется один раз и не будет повторяться до тех пор,
+  // пока компонент не будет размонтирован и не будет смонтирован снова.
+  useEffect(effectFunc, [dispatch]);
+
   return (
     <Layout>
       <Routes>
