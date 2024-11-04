@@ -22,7 +22,7 @@ import axios from "axios";
 
 // тип: AxiosRequestConfig
 const config = {
-  baseURL: "http://localhost:3003/api", // Указываем базовый URL для всех запросов.
+  baseURL: "http://localhost:3003/api", // Указываем базовый URL сервера для всех запросов.
 };
 
 const instance = axios.create(config);

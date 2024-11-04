@@ -1,9 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"; // Импортируем функцию configureStore из библиотеки Redux Toolkit для создания хранилища Redux.
 import { authSlice } from "./features/auth/authSlice"; // Импортируем слайс из файла authSlice.
+import { postSlice } from "./features/post/postSlice";
 
-// Создаем объект редюсеров, где ключ 'auth' будет использоваться для доступа к состоянию аутентификации.
+// Создаем объект редюсеров, где ключ будет использоваться для доступа к состояниям слайсов хранилища
+//  и указываем редюсеры слайсов которыйе будут обрабатывать действия и обновлять состояние.
 const reducer = {
-  auth: authSlice.reducer, // Указываем редюсер слайса, который будет обрабатывать действия и обновлять состояние.
+  auth: authSlice.reducer,
+  post: postSlice.reducer,
 };
 
 // Создаем объект конфигурации для хранилища.
