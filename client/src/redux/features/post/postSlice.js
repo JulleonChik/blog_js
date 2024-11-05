@@ -24,6 +24,19 @@ const sliceOptions = {
       })
       .addCase(createPost.rejected, (state) => {
         state.isLoading = false;
+      })
+      //  Get All Posts
+      .addCase(getAllPosts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllPosts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = action.payload.posts;
+        state.popularPosts = action.payload.popularPosts;
+      })
+      .addCase(getAllPosts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
       });
   }, // Асинхронные редюсеры для обработки асинхронных действий, созданных через createAsyncThunk
 };
@@ -56,6 +69,26 @@ const createPostPayloadCreator = async (params) => {
 export const createPost = createAsyncThunk(
   createPostTypePrefix,
   createPostPayloadCreator
+);
+
+//                      | Get All Posts |
+
+const getAllPostsTypePrefix = "post/getAllPosts";
+
+const getAllPostsPayloadCreator = async () => {
+  try {
+    const { data } = await axiosInstance.get("/posts");
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// Асинхронное действие для выполнения запроса к серверу на получение всех постов и популярных
+export const getAllPosts = createAsyncThunk(
+  getAllPostsTypePrefix,
+  getAllPostsPayloadCreator
 );
 
 /* 
