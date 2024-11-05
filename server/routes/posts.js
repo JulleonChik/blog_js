@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkAuthFilter } from "../utils/checkAuthFilter.js";
-import { createPost } from "../controllers/posts.js";
+import { createPost, getAllPosts } from "../controllers/posts.js";
 
 const router = new Router();
 
@@ -8,5 +8,7 @@ const router = new Router();
 
 // Create post
 router.post("/", checkAuthFilter, createPost);
+// Get All Posts
+router.get("/", getAllPosts);
 
 export default router;

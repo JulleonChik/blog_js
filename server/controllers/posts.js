@@ -76,3 +76,21 @@ export const createPost = async (req, res) => {
     });
   }
 };
+
+// Get All Posts
+export const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find().sort("-createdAt");
+
+    if (!posts) {
+      return res.json({ message: "Not a single post was found." });
+    }
+    const popularPosts = await Post.find().limit(5).sort("-views");
+    res.json({ posts, popularPosts });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      message: "Something went wrong. Try again later...",
+    });
+  }
+};
