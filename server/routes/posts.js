@@ -3,6 +3,7 @@ import { checkAuthFilter } from "../utils/checkAuthFilter.js";
 import {
   createPost,
   deletePostById,
+  updatePostById,
   getAllPosts,
   getMyPosts,
   getPostById,
@@ -22,5 +23,7 @@ router.get("/:id", getPostById);
 router.get("/user/myposts", checkAuthFilter, getMyPosts);
 // Delete Post By Id
 router.delete("/:id", checkAuthFilter, deletePostById);
+// Update Post By Id
+router.put("/:id", checkAuthFilter, updatePostById);
 
 export default router;
