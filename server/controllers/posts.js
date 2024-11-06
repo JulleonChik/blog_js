@@ -94,3 +94,25 @@ export const getAllPosts = async (req, res) => {
     });
   }
 };
+
+export const getPostById = async (req, res) => {
+  try {
+    const post = await Post.findOneAndUpdate(
+      { _id: req.params.id }, // Указываем фильтр как объект с полем _id
+      { $inc: { views: 1 } }, // Увеличиваем количество просмотров на 1
+      { new: true } // Опция для возвращения обновленного документа
+    );
+
+    if (!post) {
+      return res.json({
+        message:
+          "The post was not found by this ID. Perhaps this post was deleted or never existed at all",
+      });
+    }
+
+    res.json(post);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong", error });
+  }
+};
