@@ -97,8 +97,8 @@ export const getAllPosts = async (req, res) => {
 
 export const getPostById = async (req, res) => {
   try {
-    const post = await Post.findOneAndUpdate(
-      { _id: req.params.id }, // Указываем фильтр как объект с полем _id
+    const post = await Post.findByIdAndUpdate(
+      req.params.id, // Указываем id
       { $inc: { views: 1 } }, // Увеличиваем количество просмотров на 1
       { new: true } // Опция для возвращения обновленного документа
     );
