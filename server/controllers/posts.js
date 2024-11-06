@@ -95,6 +95,7 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
+// Get Post By Id
 export const getPostById = async (req, res) => {
   try {
     const post = await Post.findByIdAndUpdate(
@@ -114,5 +115,23 @@ export const getPostById = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong", error });
+  }
+};
+
+// Get My Posts
+export const getMyPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    const list = await Promise.all(
+      user.posts.map((post) => {
+        return Post.findById(post._id);
+      })
+    );
+    res.json(list);
+  } catch (error) {
+    console.log(error);
+    res.json({
+      message: "Something went wrong. Try again later...",
+    });
   }
 };
