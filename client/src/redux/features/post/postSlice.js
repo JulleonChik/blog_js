@@ -37,6 +37,20 @@ const sliceOptions = {
       .addCase(getAllPosts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
+      })
+      // Delete Post By Id
+      .addCase(deletePostById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePostById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = state.posts.filter(
+          (post) => post._id !== action.payload._id
+        );
+      })
+      .addCase(deletePostById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
       });
   }, // Асинхронные редюсеры для обработки асинхронных действий, созданных через createAsyncThunk
 };
@@ -91,6 +105,23 @@ export const getAllPosts = createAsyncThunk(
   getAllPostsPayloadCreator
 );
 
+//                      | Delete Post |
+const deletePostTypePrefix = "post/deletePost";
+const deletePostPayloadCreator = async (id) => {
+  try {
+    const { data } = await axiosInstance.delete(`/posts/${id}`, id);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// Асинхронное действие для выполнения запроса к серверу на удаление поста по id
+export const deletePostById = createAsyncThunk(
+  deletePostTypePrefix,
+  deletePostPayloadCreator
+);
 /* 
     ---------------------------------------------------------------------------------------------------------------------------------------------------
     При создании асинхронного действия с createAsyncThunk, Redux Toolkit разделяет это действие на три действия (этапа) разных типов

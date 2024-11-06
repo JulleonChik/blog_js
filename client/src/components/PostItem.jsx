@@ -4,6 +4,10 @@ import Moment from "react-moment";
 import { Link } from "react-router-dom";
 
 export const PostItem = ({ post }) => {
+  // Проверяем, есть ли данные поста
+  if (!post) {
+    return <p className="text-white">Загрузка...</p>; // Если данных нет, выводим "Загрузка..."
+  }
   return (
     <Link to={`/${post._id}`}>
       <div className="flex flex-col basis-1/4 flex-grow">

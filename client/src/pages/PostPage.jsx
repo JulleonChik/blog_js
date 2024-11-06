@@ -1,8 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../utils/axios";
-import { AiFillEye, AiOutlineMessage } from "react-icons/ai";
+import {
+  AiFillEye,
+  AiOutlineMessage,
+  AiTwotoneEdit,
+  AiFillDelete,
+} from "react-icons/ai";
 import Moment from "react-moment";
+import { useDispatch, useSelector } from "react-redux";
+import { deletePostById } from "../redux/features/post/postSlice";
+import { toast } from "react-toastify";
 
 // Компонент PostPage — отвечает за отображение одного поста, который загружается через API-запрос
 export const PostPage = () => {
@@ -31,6 +39,18 @@ export const PostPage = () => {
     fetchPost(); // Выполняем fetchPost один раз при монтировании
   }, [fetchPost]); // Передаем fetchPost как зависимость, чтобы избежать лишних запросов
 
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handlerDeletePost = () => {
+    try {
+      dispatch(deletePostById(params.id));
+      navigate("/posts");
+      toast("Пост был успешно удалён");
+    } catch (error) {
+      console.error("Failed to delete post:", error);
+    }
+  };
   // Отображение интерфейса компонента
   return (
     <div>
@@ -81,15 +101,31 @@ export const PostPage = () => {
             <p className="text-white opacity-60 text-xs pt-4">{post.text}</p>
 
             {/* Кнопки для отображения количества просмотров и комментариев */}
-            <div className="flex items-center gap-3 mt-2">
-              <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
-                <AiFillEye />
-                <span>{post.views}</span>
-              </button>
-              <button className="flex justify-center items-center gap-2 text-xs text-white opacity-50">
-                <AiOutlineMessage />
-                <span>{post.comments?.length || 0}</span>
-              </button>
+            <div className="flex items-center gap-3 mt-2 justify-between">
+              <div className="flex gap-3 mt-4">
+                <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
+                  <AiFillEye />
+                  <span>{post.views}</span>
+                </button>
+                <button className="flex justify-center items-center gap-2 text-xs text-white opacity-50">
+                  <AiOutlineMessage />
+                  <span>{post.comments?.length || 0}</span>
+                </button>
+              </div>
+
+              {user?._id === post.author && (
+                <div className="flex gap-3 mt-4">
+                  <button className="flex items-center justify-center gap-2 text-white opacity-50">
+                    <AiTwotoneEdit />
+                  </button>
+                  <button
+                    onClick={handlerDeletePost}
+                    className="flex justify-center items-center gap-2 text-white opacity-50"
+                  >
+                    <AiFillDelete />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div className="w-1/3">COMMENTS</div>
