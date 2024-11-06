@@ -2,6 +2,7 @@ import { Router } from "express";
 import { checkAuthFilter } from "../utils/checkAuthFilter.js";
 import {
   createPost,
+  deletePostById,
   getAllPosts,
   getMyPosts,
   getPostById,
@@ -19,5 +20,7 @@ router.get("/", getAllPosts);
 router.get("/:id", getPostById);
 // Get My Posts
 router.get("/user/myposts", checkAuthFilter, getMyPosts);
+// Delete Post By Id
+router.delete("/:id", checkAuthFilter, deletePostById);
 
 export default router;
