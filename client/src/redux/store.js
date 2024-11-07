@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"; // Импортируем функцию configureStore из библиотеки Redux Toolkit для создания хранилища Redux.
 import { authSlice } from "./features/auth/authSlice"; // Импортируем слайс из файла authSlice.
 import { postSlice } from "./features/post/postSlice";
+import { commentSlice } from "./features/comment/commentSlice";
 
 // Компоненты могут получать данные из хранилища с помощью хука useSelector и отправлять
 // действия с помощью useDispatch, что позволяет управлять состоянием приложения в реальном времени и реагировать на изменения состояния.
@@ -14,6 +15,7 @@ import { postSlice } from "./features/post/postSlice";
 const reducer = {
   auth: authSlice.reducer,
   post: postSlice.reducer,
+  comment: commentSlice.reducer,
 };
 
 // Создаем объект конфигурации для хранилища.

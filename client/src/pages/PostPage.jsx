@@ -10,7 +10,12 @@ import {
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePostById } from "../redux/features/post/postSlice";
+import {
+  createComment,
+  getAllPostComments,
+} from "../redux/features/comment/commentSlice";
 import { toast } from "react-toastify";
+import { CommentItem } from "./../components/CommentItem";
 
 // Компонент PostPage — отвечает за отображение одного поста, который загружается через API-запрос
 export const PostPage = () => {
@@ -51,6 +56,35 @@ export const PostPage = () => {
       console.error("Failed to delete post:", error);
     }
   };
+
+  const [comment, setComment] = useState("");
+
+  const handlerCommentSubmit = () => {
+    try {
+      const postId = params.id;
+      dispatch(createComment({ postId, comment }));
+      setComment("");
+    } catch (error) {
+      toast("Ошибка при создании комментария.");
+      console.error("Failed to submit comment:", error);
+    }
+  };
+
+  const fetchComments = useCallback(async () => {
+    try {
+      dispatch(getAllPostComments(params.id));
+    } catch (error) {
+      toast("Ошибка при получении списка комментариев.");
+      console.error("Failed to get all post's comments :", error);
+    }
+  }, [params.id, dispatch]);
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
+
+  const { comments } = useSelector((state) => state.comment);
+
   // Отображение интерфейса компонента
   return (
     <div>
@@ -130,7 +164,28 @@ export const PostPage = () => {
               )}
             </div>
           </div>
-          <div className="w-1/3">COMMENTS</div>
+          <div className="w-1/3 p-8 bg-gray-700 flex flex-col gap-2 rounded-sm ">
+            <form className="flex  gap-2" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="text"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Comment"
+                className="text-black w-full rounded-sm bg-gray-400 border p-2 text-xs outline-none placeholder:text-gray-700"
+              />
+              <button
+                type="submit"
+                onClick={handlerCommentSubmit}
+                className="flex justify-center items-center bg-gray-600 text-xs text-white rounded-sm py-2 px-4"
+              >
+                Отправить
+              </button>
+            </form>
+
+            {comments?.map((cmt) => (
+              <CommentItem key={cmt._id} cmt={cmt} />
+            ))}
+          </div>
         </div>
       ) : (
         // Сообщение "Загрузка...", пока данные поста еще не получены

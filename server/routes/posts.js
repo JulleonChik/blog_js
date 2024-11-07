@@ -7,6 +7,7 @@ import {
   getAllPosts,
   getMyPosts,
   getPostById,
+  getAllPostComments,
 } from "../controllers/posts.js";
 
 const router = new Router();
@@ -25,5 +26,7 @@ router.get("/user/myposts", checkAuthFilter, getMyPosts);
 router.delete("/:id", checkAuthFilter, deletePostById);
 // Update Post By Id
 router.put("/:id", checkAuthFilter, updatePostById);
+// Get All Post's comments
+router.get("/:id/comments", getAllPostComments);
 
 export default router;
