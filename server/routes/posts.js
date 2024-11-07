@@ -11,7 +11,7 @@ import {
 
 const router = new Router();
 
-// http://localhost:3003/posts
+// http://localhost:3003/api/posts
 
 // Create post
 router.post("/", checkAuthFilter, createPost);
