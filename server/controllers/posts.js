@@ -164,7 +164,7 @@ export const deletePostById = async (req, res) => {
 };
 
 // Update Post By Id
-export const updatePostById = async (res, req) => {
+export const updatePostById = async (req, res) => {
   try {
     const { title, text, id } = req.body;
 

@@ -29,7 +29,9 @@ export const PostItem = ({ post }) => {
           </div>
         </div>
         <div className="text-white opacity-60 text-xl">{post.title}</div>
-        <p className="text-white opacity-60 text-xs pt-4">{post.text}</p>
+        <p className="text-white opacity-60 text-xs pt-4 line-clamp-3">
+          {post.text}
+        </p>
         <div className="flex items-center gap-3 mt-2">
           <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
             <AiFillEye />

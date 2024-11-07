@@ -51,6 +51,21 @@ const sliceOptions = {
       .addCase(deletePostById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
+      })
+      // Update Post By Id
+      .addCase(updatePostById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePostById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.posts.findIndex((post) => {
+          return post._id === action.payload._id;
+        });
+        state.posts[index] = action.payload;
+      })
+      .addCase(updatePostById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
       });
   }, // Асинхронные редюсеры для обработки асинхронных действий, созданных через createAsyncThunk
 };
@@ -122,6 +137,28 @@ export const deletePostById = createAsyncThunk(
   deletePostTypePrefix,
   deletePostPayloadCreator
 );
+
+//                      | Update Post By Id |
+const updatePostByIdTypePrefix = "post/updatePost";
+const updatePostByIdPayloadCreator = async (updatedPost) => {
+  try {
+    const { data } = await axiosInstance.put(
+      `/posts/${updatedPost.id}`,
+      updatedPost
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// Асинхронное действие для выполнения запроса к серверу на обновление поста по id
+export const updatePostById = createAsyncThunk(
+  updatePostByIdTypePrefix,
+  updatePostByIdPayloadCreator
+);
+
 /* 
     ---------------------------------------------------------------------------------------------------------------------------------------------------
     При создании асинхронного действия с createAsyncThunk, Redux Toolkit разделяет это действие на три действия (этапа) разных типов
